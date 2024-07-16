@@ -1,0 +1,10 @@
+data_path: "knauf_systems/tender_short/short_tender_text_all_systems_de.csv"
+llm_url: "http://localhost:11434"
+# llm_name: "zephyr-tender-text"
+# embedding_model: "sentence-transformers/all-mpnet-base-v2"
+# qdrant_url: "http://localhost:6333"
+llm_name: "gpt-3.5-turbo"
+embedding_model: "nomic-ai/nomic-embed-text-v1.5"
+milvus_uri: "./milvus_tender_demo_short_doc.db"
+collection_name: "tendertext_short"
+chunk_size: 1024
