@@ -63,3 +63,19 @@ uvicorn app:app --reload
 
 #### Response
 ![Response](images/response.png)
+
+#### LATEST:
+```
+conda activate llamaindex_latest_1
+uvicorn app:app --reload
+```
+
+To ingest data and create a new DB, modify the config yaml file with desired DB name and run:
+
+``` 
+python data_milvus.py --ingest
+```
+
+### TODO: Refactor ServiceContext to llamaindex Settings API
+
+<!-- TODO: Add detailed steps for refactoring ServiceContext to use the llamaindex Settings API. Include code examples and configuration changes required. -->

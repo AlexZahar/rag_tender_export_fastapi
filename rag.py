@@ -13,7 +13,7 @@ class RAG:
 
     def milvus_index(self):
         milvus_vector_store = MilvusVectorStore(
-            uri=self.config['milvus_uri'],
+            uri="./milvus_innenwande_tender_fastapi.db",
             dim=768,
             overwrite=False,
             enable_sparse=True,
