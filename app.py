@@ -3,14 +3,11 @@ from typing import Optional
 from pydantic import BaseModel, Field
 import yaml
 from rag import RAG
-from llama_index.llms.openai import OpenAI
-from llama_index.core import Settings
 from typing import List
 config_file = "config.yml"
 
 with open(config_file, "r") as conf:
     config = yaml.safe_load(conf)
-
 
 class Query(BaseModel):
     query: str
@@ -24,10 +21,7 @@ class SourceNode(BaseModel):
 class Response(BaseModel):
     search_result: str
     source_nodes: List[SourceNode]
-
-# llm = Ollama(model=config["llm_name"], url=config["llm_url"])
-llm = OpenAI(model=config["llm_name"])
-rag = RAG(config_file=config, llm=llm)
+rag = RAG(config_file=config)
 index = rag.milvus_index()
 
 
@@ -43,7 +37,14 @@ b = "geben Sie bitte die Knauf System ID an, die diesen Eigenschaften entspricht
 
 @app.post("/api/search", response_model=Response, status_code=200)
 def search(query: Query):
-    query_engine = index.as_query_engine(vector_store_query_mode="hybrid", output=Response, response_mode="tree_summarize", verbose=True)
+    query_engine = index.as_query_engine(
+        vector_store_query_mode="hybrid", 
+        # similarity_top_k=query.similarity_top_k, #Weird behavior
+        alpha=0.5,
+        output=Response, 
+        response_mode="tree_summarize", 
+        verbose=True
+    )
     response = query_engine.query(a + query.query + b)
     print("response", response)
     print("response.source_nodes", response.source_nodes)
