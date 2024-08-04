@@ -3,11 +3,8 @@ from typing import Optional
 from pydantic import BaseModel, Field
 import yaml
 from rag import RAG
-from llama_index.llms.openai import OpenAI
-from llama_index.core import Settings
 from typing import List
 config_file = "config.yml"
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 with open(config_file, "r") as conf:
     config = yaml.safe_load(conf)
@@ -27,15 +24,11 @@ class Response(BaseModel):
 
 ### Local LLM
 # llm = Ollama(model=config["llm_name"], url=config["llm_url"])
-llm = OpenAI(model=config["llm_name"])
+# llm = OpenAI(model=config["llm_name"])
 
-Settings.llm = OpenAI(model=config["llm_name"])
-Settings.embed_model = HuggingFaceEmbedding(model_name=config["embedding_model"], trust_remote_code=True) 
-# Settings.node_parser = SentenceSplitter(chunk_size=512, chunk_overlap=20)
-# Settings.num_output = 512
-Settings.context_window = 3900
 
-rag = RAG(config_file=config, llm=llm)
+
+rag = RAG(config_file=config)
 index = rag.milvus_index()
 
 

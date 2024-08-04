@@ -1,15 +1,18 @@
-from llama_index.core import VectorStoreIndex, ServiceContext
+from llama_index.core import VectorStoreIndex
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.vector_stores.milvus import MilvusVectorStore
+from llama_index.core import Settings
+from llama_index.llms.openai import OpenAI
+
 
 class RAG:
-    def __init__(self, config_file, llm):
+    def __init__(self, config_file):
         self.config = config_file
-        self.llm = llm  # ollama llm
-    
-    def load_embedding_model(self):
-        embed_model = HuggingFaceEmbedding(model_name=self.config['embedding_model'], trust_remote_code=True)
-        return embed_model
+        Settings.llm = OpenAI(model=self.config["llm_name"])
+        Settings.embed_model = HuggingFaceEmbedding(model_name=self.config["embedding_model"], trust_remote_code=True) 
+        # Settings.node_parser = SentenceSplitter(chunk_size=512, chunk_overlap=20)
+        # Settings.num_output = 512
+        Settings.context_window = 3900
 
     def milvus_index(self):
         milvus_vector_store = MilvusVectorStore(
@@ -24,6 +27,6 @@ class RAG:
   
 
         index = VectorStoreIndex.from_vector_store(
-            vector_store=milvus_vector_store, embed_model=self.load_embedding_model(), llm=self.llm
+            vector_store=milvus_vector_store
         )
         return index
