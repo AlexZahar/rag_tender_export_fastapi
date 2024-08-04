@@ -21,13 +21,6 @@ class SourceNode(BaseModel):
 class Response(BaseModel):
     search_result: str
     source_nodes: List[SourceNode]
-
-### Local LLM
-# llm = Ollama(model=config["llm_name"], url=config["llm_url"])
-# llm = OpenAI(model=config["llm_name"])
-
-
-
 rag = RAG(config_file=config)
 index = rag.milvus_index()
 
