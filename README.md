@@ -61,8 +61,8 @@ uvicorn app:app --reload
 
 ![Post Request](images/post_request.png)
 
-#### Response
-![Response](images/response.png)
+<!-- #### Response
+![Response](images/response.png) -->
 
 #### LATEST:
 ```
