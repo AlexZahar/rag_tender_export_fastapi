@@ -1,7 +1,6 @@
 import pandas as pd
 from llama_index.core import (
     StorageContext,
-    ServiceContext,
     VectorStoreIndex,
     Document
 )
@@ -16,7 +15,7 @@ class Data:
     def __init__(self, config):
         self.config = config
 
-    def ingest(self, embedder, llm):
+    def ingest(self, embed_model, llm):
         print("Indexing data...")
         
         # Load data from CSV
@@ -41,12 +40,10 @@ class Data:
             verbose=self.config["milvus"]["verbose"]
         )
         storage_context = StorageContext.from_defaults(vector_store=milvus_vector_store)
-        service_context = ServiceContext.from_defaults(
-            llm=llm, embed_model=embedder
-        )
+    
 
         index = VectorStoreIndex.from_documents(
-            documents, storage_context=storage_context, show_progress=True, service_context=service_context
+            documents, embed_model=embed_model, llm=llm, storage_context=storage_context, show_progress=True
         )
         print(
             f"Data indexed successfully to Milvus."
@@ -73,4 +70,4 @@ if __name__ == "__main__":
         print("Loading Embedder...")
         llm = OpenAI(config["llm_name"])
         embed_model = HuggingFaceEmbedding(model_name=config["embedding_model"], trust_remote_code=True) 
-        data.ingest(embedder=embed_model, llm=llm)
+        data.ingest(embed_model=embed_model, llm=llm)
