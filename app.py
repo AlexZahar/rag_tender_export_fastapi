@@ -6,24 +6,14 @@ from rag import RAG
 from typing import List
 config_file = "config.yml"
 from telemetry import setup_telemetry
+from models.models import Query, Response, SourceNode
+
 
 setup_telemetry()
 
 with open(config_file, "r") as conf:
     config = yaml.safe_load(conf)
 
-class Query(BaseModel):
-    query: str
-    similarity_top_k: Optional[int] = Field(default=1, ge=1, le=5)
-
-
-class SourceNode(BaseModel):
-    text: str
-    score: float
-
-class Response(BaseModel):
-    search_result: str
-    source_nodes: List[SourceNode]
 rag = RAG(config_file=config)
 index = rag.milvus_index()
 
@@ -49,8 +39,6 @@ def search(query: Query):
         verbose=True
     )
     response = query_engine.query(a + query.query + b)
-    print("response", response)
-    print("response.source_nodes", response.source_nodes)
 
     # Create a list of SourceNode objects
     source_nodes = [
