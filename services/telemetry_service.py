@@ -6,10 +6,13 @@ from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk import trace as trace_sdk
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+from config.settings import load_config
+
+config=load_config()
 
 def setup_telemetry():
     try:
-        endpoint = "http://127.0.0.1:6006/v1/traces"
+        endpoint = config["telemetry_url"]
         tracer_provider = trace_sdk.TracerProvider()
         span_processor = SimpleSpanProcessor(OTLPSpanExporter(endpoint))
         tracer_provider.add_span_processor(span_processor)
