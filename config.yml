@@ -7,7 +7,7 @@ llm_name: "gpt-3.5-turbo"
 embedding_model: "nomic-ai/nomic-embed-text-v1.5"
 collection_name: "tendertext_short"
 chunk_size: 1024
-
+telemetry_url: "http://127.0.0.1:6006/v1/traces"
 milvus:
   uri: "DB/milvus_innenwande_tender_fastapi.db"
   dim: 768
