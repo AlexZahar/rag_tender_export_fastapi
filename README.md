@@ -18,6 +18,26 @@ For more details, please checkout the [blog post](https://otmaneboughaba.com/pos
 
 ## Running the project
 
+#### Install dependency with Poetry
+
+```bash
+> python -m phoenix.server.main serve
+
+```
+
+#### Starting a the telemetry server
+
+```bash
+> python -m phoenix.server.main serve
+
+```
+#### Starting the backend service
+
+```bash
+
+> uvicorn app:app --reload
+
+```
 #### Starting a Qdrant docker instance
 
 ```bash
