@@ -5,6 +5,9 @@ import yaml
 from rag import RAG
 from typing import List
 config_file = "config.yml"
+from telemetry import setup_telemetry
+
+setup_telemetry()
 
 with open(config_file, "r") as conf:
     config = yaml.safe_load(conf)
@@ -39,7 +42,7 @@ b = "geben Sie bitte die Knauf System ID an, die diesen Eigenschaften entspricht
 def search(query: Query):
     query_engine = index.as_query_engine(
         vector_store_query_mode="hybrid", 
-        # similarity_top_k=query.similarity_top_k, #Weird behavior
+        similarity_top_k=query.similarity_top_k, #Weirdbehavior
         alpha=0.5,
         output=Response, 
         response_mode="tree_summarize", 
