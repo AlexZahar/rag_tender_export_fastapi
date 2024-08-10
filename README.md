@@ -38,7 +38,8 @@ This project aims to help finding Knauf Tender text from Competitor tender text 
 To ingest data and create a new DB, modify the config yaml file with desired `milvus.uri` name and `data_path`
 
 ``` 
-python data_milvus.py --ingest
+python services/data_milvus_service.py --ingest
+python services/data_qdrant_service.py --ingest
 ```
 
 

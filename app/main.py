@@ -1,18 +1,12 @@
 from fastapi import FastAPI
-from typing import Optional
-from pydantic import BaseModel, Field
-import yaml
-from rag import RAG
-from typing import List
-config_file = "config.yml"
-from telemetry import setup_telemetry
+from services.rag_service import RAG
+from config.settings import load_config
+from services.telemetry_service import setup_telemetry
 from models.models import Query, Response, SourceNode
 
 
 setup_telemetry()
-
-with open(config_file, "r") as conf:
-    config = yaml.safe_load(conf)
+config=load_config()
 
 rag = RAG(config_file=config)
 index = rag.milvus_index()
