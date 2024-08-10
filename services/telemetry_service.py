@@ -2,11 +2,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from config.settings import load_config
 from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk import trace as trace_sdk
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+from config.settings import load_config
 
 config=load_config()
 

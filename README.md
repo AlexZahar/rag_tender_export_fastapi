@@ -34,6 +34,14 @@ This project aims to help finding Knauf Tender text from Competitor tender text 
 > uvicorn app:app --reload
 
 ```
+#### Starting Frontend chat
+
+```bash
+
+> streamlit run ./ui/streamlit_app.py
+
+```
+
 #### DATA: Ingest data into vector store
 To ingest data and create a new DB, modify the config yaml file with desired `milvus.uri` name and `data_path`
 
