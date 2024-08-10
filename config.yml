@@ -9,7 +9,7 @@ collection_name: "tendertext_short"
 chunk_size: 1024
 
 milvus:
-  uri: "./milvus_innenwande_tender_fastapi.db"
+  uri: "DB/milvus_innenwande_tender_fastapi.db"
   dim: 768
   overwrite: false
   enable_sparse: true
