@@ -1,27 +1,23 @@
-# RAG: Research-assistant
+# RAG: Knauf Tender text from Competitor tender
 
-![Header](images/readme_header.png)
 
-This project aims to help researchers find answers from a set of research papers with the help of a customized RAG pipeline and a powerfull LLM, all offline and free of cost.
+This project aims to help finding Knauf Tender text from Competitor tender text data with the help of a customized RAG pipeline and a powerfull LLM
 
-For more details, please checkout the [blog post](https://otmaneboughaba.com/posts/local-rag-api) about this project.
 
 ## How it works
 
-![Project Architecture](images/local-rag-architecture.png)
-
-1. Download some research papers from Arxiv
-2. Use Llamaindex to load, chunk, embed and store these documents to a Qdrant database
+1. Use Llamaindex to load, chunk, embed and store these documents to a Milvus or Qdrant database
 3. FastAPI endpoint that receives a query/question, searches through our documents and find the best matching chunks
 4. Feed these relevant documents into an LLM as a context
 5. Generate an easy to understand answer and return it as an API response alongside citing the sources
+6. Monitor with telemetry tool: Phoenix arize
 
 ## Running the project
 
 #### Install dependency with Poetry
 
 ```bash
-> python -m phoenix.server.main serve
+> poetry install
 
 ```
 
@@ -38,19 +34,23 @@ For more details, please checkout the [blog post](https://otmaneboughaba.com/pos
 > uvicorn app:app --reload
 
 ```
+#### DATA: Ingest data into vector store
+To ingest data and create a new DB, modify the config yaml file with desired `milvus.uri` name and `data_path`
+
+``` 
+python data_milvus.py --ingest
+```
+
+
 #### Starting a Qdrant docker instance
 
 ```bash
 docker run -p 6333:6333 -v ~/qdrant_storage:/qdrant/storage:z qdrant/qdrant
 ```
 
-#### Downloading & Indexing data
 
-```bash
-python rag/data.py --query "LLM" --max 10 --ingest
-```
 
-#### Starting Ollama LLM server
+#### Starting Local Ollama LLM server
 
 Follow [this article](https://otmaneboughaba.com/posts/local-llm-ollama-huggingface/) for more infos on how to run models from hugging face locally with Ollama.
 
@@ -68,12 +68,6 @@ ollama run zephyr-tender-text
 
 By default, Ollama runs on ```http://localhost:11434```
 
-#### Starting the api server
-
-```bash
-uvicorn app:app --reload
-```
-
 
 ## Example
 
@@ -81,21 +75,3 @@ uvicorn app:app --reload
 
 ![Post Request](images/post_request.png)
 
-<!-- #### Response
-![Response](images/response.png) -->
-
-#### LATEST:
-```
-conda activate llamaindex_latest_1
-uvicorn app:app --reload
-```
-
-To ingest data and create a new DB, modify the config yaml file with desired DB name and run:
-
-``` 
-python data_milvus.py --ingest
-```
-
-### TODO: Refactor ServiceContext to llamaindex Settings API
-
-<!-- TODO: Add detailed steps for refactoring ServiceContext to use the llamaindex Settings API. Include code examples and configuration changes required. -->
