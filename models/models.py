@@ -1,9 +1,14 @@
+from pydantic import BaseModel
 from typing import List, Optional
-from pydantic import BaseModel, Field
 
 class Query(BaseModel):
     query: str
-    similarity_top_k: Optional[int] = Field(default=1, ge=1, le=5)
+    similarity_top_k: int
+    rerank: bool
+    hyde_transform: bool
+    alpha: float
+    response_mode: str
+    use_parser: bool
 
 class SourceNode(BaseModel):
     text: str
