@@ -148,7 +148,7 @@ if search_button_placeholder.button("Search", key="search_button"):
             )
 
             # Make the API request
-            response = requests.post("http://localhost:8080/api/search", json=payload.dict())
+            response = requests.post("https://ragtenderexportfastapi-production.up.railway.app/api/search", json=payload.dict())
 
             if response.status_code == 200:
                 result = Response(**response.json())
