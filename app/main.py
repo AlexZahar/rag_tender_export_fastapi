@@ -18,11 +18,12 @@ def root():
 
 @app.post("/api/search", response_model=Response, status_code=200)
 def search(query: Query):
-    # Format the query
-    parsed_query = rag.parse_query(query, num_queries=1)[0]  # Assuming we want the first generated query
-
-    # Generate the final query
-    final_query = rag.generate_final_query(parsed_query)
+    # Use the parser if enabled
+    if query.use_parser:
+        parsed_query = rag.parse_query(query, num_queries=1)[0]
+        final_query = rag.generate_final_query(parsed_query)
+    else:
+        final_query = query
 
     # Create the query engine
     query_engine = rag.query_engine(

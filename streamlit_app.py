@@ -1,8 +1,6 @@
-
 import streamlit as st
 import requests
-
-# Assuming you have these models defined
+from typing import List, Optional
 from models.models import Query, Response, SourceNode
 
 st.set_page_config(page_title="Research RAG", layout="wide")
@@ -30,11 +28,19 @@ if show_config:
         help="Enable or disable Hypothetical Document Embeddings (HyDE) transformation."
     )
 
-    similarity_top_k = st.sidebar.number_input(
+    use_parser = st.sidebar.radio(
+        "Use Query Parser",
+        options=[True, False],
+        index=0,
+        help="Enable or disable query parsing."
+    )
+
+    similarity_top_k = st.sidebar.slider(
         "Similarity Top K",
         min_value=1,
-        max_value=20,
+        max_value=10,
         value=5,
+        step=1,
         help="Number of top similar documents to retrieve."
     )
 
@@ -82,6 +88,7 @@ else:
     # Default values when configuration is hidden
     rerank = True
     hyde_transform = False
+    use_parser = True
     similarity_top_k = 5
     alpha = 0.5
     response_mode = "tree_summarize"
@@ -97,6 +104,7 @@ if st.button("Search"):
             similarity_top_k=similarity_top_k,
             rerank=rerank,
             hyde_transform=hyde_transform,
+            use_parser=use_parser,
             alpha=alpha,
             response_mode=response_mode
         )

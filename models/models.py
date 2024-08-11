@@ -8,6 +8,7 @@ class Query(BaseModel):
     hyde_transform: bool
     alpha: float
     response_mode: str
+    use_parser: bool
 
 class SourceNode(BaseModel):
     text: str
