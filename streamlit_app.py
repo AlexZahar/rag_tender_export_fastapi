@@ -32,26 +32,23 @@ with col2:
 if show_config:
     st.sidebar.subheader("Query Engine Configuration")
 
-    rerank = st.sidebar.radio(
+    rerank = st.sidebar.checkbox(
         "Rerank",
-        options=[True, False],
-        index=0 if st.session_state.get("rerank", DEFAULT_CONFIG["rerank"]) else 1,
+        value=st.session_state.get("rerank", DEFAULT_CONFIG["rerank"]),
         key="rerank",
         help="Enable or disable reranking of search results."
     )
 
-    hyde_transform = st.sidebar.radio(
+    hyde_transform = st.sidebar.checkbox(
         "HyDE Transform",
-        options=[True, False],
-        index=0 if st.session_state.get("hyde_transform", DEFAULT_CONFIG["hyde_transform"]) else 1,
+        value=st.session_state.get("hyde_transform", DEFAULT_CONFIG["hyde_transform"]),
         key="hyde_transform",
         help="Enable or disable Hypothetical Document Embeddings (HyDE) transformation."
     )
 
-    use_parser = st.sidebar.radio(
+    use_parser = st.sidebar.checkbox(
         "Use Query Parser",
-        options=[True, False],
-        index=0 if st.session_state.get("use_parser", DEFAULT_CONFIG["use_parser"]) else 1,
+        value=st.session_state.get("use_parser", DEFAULT_CONFIG["use_parser"]),
         key="use_parser",
         help="Enable or disable query parsing."
     )
