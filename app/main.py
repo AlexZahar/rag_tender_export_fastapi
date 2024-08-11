@@ -27,10 +27,11 @@ def search(query: Query):
     # Create the query engine
     query_engine = rag.query_engine(
         index,
-        rerank=True,
+        rerank=query.rerank,
+        alpha=query.alpha,
         similarity_top_k=query.similarity_top_k,
-        response_mode="tree_summarize",
-        hydeTransform=True
+        response_mode=query.response_mode,
+        hydeTransform=query.hyde_transform
     )
 
     # Execute the query
