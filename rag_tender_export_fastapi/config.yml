@@ -1,4 +1,4 @@
-data_path: "knauf_innenwande_tender_data/long_tender_innenwande_de.csv"
+data_path: "data/long_tender_innenwande_de.csv"
 llm_url: "http://localhost:11434"
 # llm_name: "zephyr-tender-text"
 # embedding_model: "sentence-transformers/all-mpnet-base-v2"
@@ -10,7 +10,7 @@ chunk_size: 1024
 fastapi_url: "http://127.0.0.1:8000/api/search"
 telemetry_url: "http://127.0.0.1:6006/v1/traces"
 milvus:
-  uri: "DB/milvus_innenwande_tender_fastapi.db"
+  uri: "rag_tender_export_fastapi/DB/milvus_innenwande_tender_fastapi.db"
   dim: 768
   overwrite: false
   enable_sparse: true

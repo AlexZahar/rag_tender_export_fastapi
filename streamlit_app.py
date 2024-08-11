@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from typing import List, Optional
-from models.models import Query, Response, SourceNode
+from rag_tender_export_fastapi.models.models import Query, Response, SourceNode
 
 st.set_page_config(page_title="Research RAG", layout="wide")
 

@@ -24,7 +24,7 @@ class Data:
         # Create documents from DataFrame
         documents = [
             Document(
-                text=f"Knauf System ID: {row['name']}, Properties: {row['long_tender_text']}",
+                text=f"Knauf System ID: {row['name']}, Eigenschaften: {row['long_tender_text']}",
                 metadata={"name": row['name']}
             ) for i, row in df.iterrows()
         ]

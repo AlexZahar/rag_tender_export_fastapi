@@ -12,7 +12,8 @@ from llama_index.core.indices.query.query_transform.base import (
     HyDEQueryTransform,
 )
 
-from services.query_parser_service import generate_queries
+from rag_tender_export_fastapi.services.query_parser_service import generate_queries
+
 class RAG:
     def __init__(self, config_file):
         self.config = config_file
@@ -86,11 +87,9 @@ class RAG:
         ---------------------
         {context_str}
         ---------------------
-        Given the context information and not prior knowledge, \
-        answer the query. Please be concise, and provide only the Knauf System ID. \
-        If the context does not contain an answer to the query \
-        Don't make up information. \
-        Don't provide an answer containing the rephrased user query
+        Anhand der gegebenen Kontextinformationen und ohne Vorwissen, analysieren Sie die Anfrage, die einen Ausschreibungstext eines Wettbewerbers enthält. Identifizieren Sie die Knauf System-ID, die den in der Anfrage beschriebenen Eigenschaften und Spezifikationen am nächsten kommt. Es muss keine "100%ige" Übereinstimmung sein, eine Genauigkeit von über "70%" ist ausreichend. Berücksichtigen Sie dabei Faktoren wie Wandtyp, Dicke, Feuerwiderstand, Plattentyp und andere relevante Details. Geben Sie nur die passende Knauf System-ID an.
+        Falls kein System im Kontext der Anfrage zu mindestens 70% übereinstimmt, antworten Sie mit "Keine passende Übereinstimmung gefunden."
+        Erfinden Sie keine Informationen und geben Sie keine zusätzlichen Details an.
 
         Query: {query_str}
         Answer: \

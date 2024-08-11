@@ -38,7 +38,7 @@ This project aims to help finding Knauf Tender text from Competitor tender text 
 
 ```bash
 
-> streamlit run ./ui/streamlit_app.py
+> streamlit run streamlit_app.py
 
 ```
 

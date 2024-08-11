@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from services.rag_service import RAG
-from config.settings import load_config
-from services.telemetry_service import setup_telemetry
-from models.models import Query, Response, SourceNode
+from rag_tender_export_fastapi.services.rag_service import RAG
+from rag_tender_export_fastapi.config.settings import load_config
+from rag_tender_export_fastapi.services.telemetry_service import setup_telemetry
+from rag_tender_export_fastapi.models.models import Query, Response, SourceNode
 from llama_index.core import QueryBundle
 
 setup_telemetry()
