@@ -20,9 +20,25 @@ jobs:
     - name: Install Railway CLI
       run: npm i -g @railway/cli
 
+    - name: Debug - Check RAILWAY_TOKEN
+      run: |
+        if [ -n "${{ secrets.RAILWAY_TOKEN }}" ]; then
+          echo "RAILWAY_TOKEN is set"
+        else
+          echo "RAILWAY_TOKEN is not set"
+        fi
+
+    - name: Build and push Docker image
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        echo "RAILWAY_TOKEN length: ${#RAILWAY_TOKEN}"
+        railway login
+        railway up --detach
+
     - name: Deploy to Railway
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
-        railway up --detach
+        echo "RAILWAY_TOKEN length: ${#RAILWAY_TOKEN}"
         railway run --service ${{ secrets.RAILWAY_SERVICE_NAME }} --detach
