@@ -2,12 +2,12 @@ name: Deploy to Railway
 
 on:
   push:
-    branches: [main]  # Adjust this to your main branch name if different
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production  # or PROD, depending on which environment you want to use
+    environment: production  
 
     steps:
     - name: Checkout
@@ -21,39 +21,16 @@ jobs:
     - name: Install Railway CLI
       run: npm i -g @railway/cli
 
-    - name: Debug - Check RAILWAY_TOKEN
-      env:
-        DEBUG_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      run: |
-        if [ -n "$DEBUG_TOKEN" ]; then
-          echo "RAILWAY_TOKEN is set"
-          echo "RAILWAY_TOKEN length: ${#DEBUG_TOKEN}"
-        else
-          echo "RAILWAY_TOKEN is not set"
-        fi
-
     - name: Build and deploy to Railway
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        RAILWAY_SERVICE_NAME: ${{ secrets.RAILWAY_SERVICE_NAME }}
       run: |
-        if [ -n "$RAILWAY_TOKEN" ]; then
-          echo "RAILWAY_TOKEN is set in this step"
-          echo "RAILWAY_TOKEN length: ${#RAILWAY_TOKEN}"
-          railway up --detach
-        else
-          echo "RAILWAY_TOKEN is not set in this step"
-        fi
+        railway up --service "$RAILWAY_SERVICE_NAME" --detach
 
     - name: Run Railway service
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         RAILWAY_SERVICE_NAME: ${{ secrets.RAILWAY_SERVICE_NAME }}
       run: |
-        if [ -n "$RAILWAY_TOKEN" ] && [ -n "$RAILWAY_SERVICE_NAME" ]; then
-          echo "RAILWAY_TOKEN and RAILWAY_SERVICE_NAME are set in this step"
-          echo "RAILWAY_TOKEN length: ${#RAILWAY_TOKEN}"
-          echo "RAILWAY_SERVICE_NAME: $RAILWAY_SERVICE_NAME"
-          railway run --service "$RAILWAY_SERVICE_NAME" --detach
-        else
-          echo "RAILWAY_TOKEN or RAILWAY_SERVICE_NAME is not set in this step"
-        fi
+        railway run --service "$RAILWAY_SERVICE_NAME" --detach
