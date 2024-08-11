@@ -16,15 +16,12 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '16'  # Use a specific Node.js version
+        node-version: '16'
 
     - name: Install Railway CLI
       run: npm install -g @railway/cli
 
-    - name: Login to Railway
+    - name: Deploy to Railway
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      run: railway login --apiKey ${{ secrets.RAILWAY_TOKEN }}
-
-    - name: Deploy to Railway
       run: railway up --service "$RAILWAY_SERVICE_NAME" --detach
