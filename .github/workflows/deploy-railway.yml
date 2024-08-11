@@ -7,7 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production  # Specify the environment here
+    environment: production  # or PROD, depending on which environment you want to use
 
     steps:
     - name: Checkout
@@ -32,20 +32,19 @@ jobs:
           echo "RAILWAY_TOKEN is not set"
         fi
 
-    - name: Build and push Docker image
+    - name: Build and deploy to Railway
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: |
         if [ -n "$RAILWAY_TOKEN" ]; then
           echo "RAILWAY_TOKEN is set in this step"
           echo "RAILWAY_TOKEN length: ${#RAILWAY_TOKEN}"
-          railway login --token "$RAILWAY_TOKEN"
           railway up --detach
         else
           echo "RAILWAY_TOKEN is not set in this step"
         fi
 
-    - name: Deploy to Railway
+    - name: Run Railway service
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         RAILWAY_SERVICE_NAME: ${{ secrets.RAILWAY_SERVICE_NAME }}
