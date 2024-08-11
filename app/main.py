@@ -3,6 +3,7 @@ from services.rag_service import RAG
 from config.settings import load_config
 from services.telemetry_service import setup_telemetry
 from models.models import Query, Response, SourceNode
+from llama_index.core import QueryBundle
 
 setup_telemetry()
 config = load_config()
@@ -19,11 +20,12 @@ def root():
 @app.post("/api/search", response_model=Response, status_code=200)
 def search(query: Query):
     # Use the parser if enabled
+    print("query QQQQ", query)
     if query.use_parser:
-        parsed_query = rag.parse_query(query, num_queries=1)[0]
+        parsed_query = rag.parse_query(query.query, num_queries=1)[0]
         final_query = rag.generate_final_query(parsed_query)
     else:
-        final_query = query
+        final_query = query.query
 
     # Create the query engine
     query_engine = rag.query_engine(
@@ -36,7 +38,8 @@ def search(query: Query):
     )
 
     # Execute the query
-    response = query_engine.query(final_query)
+    query_bundle = QueryBundle(query_str=final_query)
+    response = query_engine.query(query_bundle)
 
     # Create a list of SourceNode objects
     source_nodes = [
