@@ -7,9 +7,27 @@ st.set_page_config(page_title="Research RAG", layout="wide")
 
 st.title("Research RAG")
 
+# Default configuration
+DEFAULT_CONFIG = {
+    "rerank": True,
+    "hyde_transform": True,
+    "use_parser": False,
+    "similarity_top_k": 5,
+    "alpha": 0.5,
+    "response_mode": "tree_summarize"
+}
+
 # Sidebar configuration
 st.sidebar.title("Configuration")
-show_config = st.sidebar.checkbox("Show Configuration Options", value=False)
+
+# Add a reset button next to the checkbox
+col1, col2 = st.sidebar.columns([3, 1])
+with col1:
+    show_config = st.checkbox("Show Configuration Options", value=False, key="show_config_checkbox")
+with col2:
+    if st.button("Reset", key="reset_button"):
+        st.session_state.update(DEFAULT_CONFIG)
+        st.rerun()
 
 if show_config:
     st.sidebar.subheader("Query Engine Configuration")
@@ -17,21 +35,24 @@ if show_config:
     rerank = st.sidebar.radio(
         "Rerank",
         options=[True, False],
-        index=0,
+        index=0 if st.session_state.get("rerank", DEFAULT_CONFIG["rerank"]) else 1,
+        key="rerank",
         help="Enable or disable reranking of search results."
     )
 
     hyde_transform = st.sidebar.radio(
         "HyDE Transform",
         options=[True, False],
-        index=0,
+        index=0 if st.session_state.get("hyde_transform", DEFAULT_CONFIG["hyde_transform"]) else 1,
+        key="hyde_transform",
         help="Enable or disable Hypothetical Document Embeddings (HyDE) transformation."
     )
 
     use_parser = st.sidebar.radio(
         "Use Query Parser",
         options=[True, False],
-        index=0,
+        index=0 if st.session_state.get("use_parser", DEFAULT_CONFIG["use_parser"]) else 1,
+        key="use_parser",
         help="Enable or disable query parsing."
     )
 
@@ -39,8 +60,9 @@ if show_config:
         "Similarity Top K",
         min_value=1,
         max_value=10,
-        value=5,
+        value=st.session_state.get("similarity_top_k", DEFAULT_CONFIG["similarity_top_k"]),
         step=1,
+        key="similarity_top_k",
         help="Number of top similar documents to retrieve."
     )
 
@@ -48,8 +70,9 @@ if show_config:
         "Alpha",
         min_value=0.0,
         max_value=1.0,
-        value=0.5,
+        value=st.session_state.get("alpha", DEFAULT_CONFIG["alpha"]),
         step=0.01,
+        key="alpha",
         help="Weight between keyword search (0.0) and vector search (1.0) in hybrid mode. Default is 0.5."
     )
 
@@ -76,8 +99,9 @@ if show_config:
     response_mode = st.sidebar.selectbox(
         "Response Mode",
         options=response_mode_options,
-        index=2,  # Default to "tree_summarize"
+        index=response_mode_options.index(st.session_state.get("response_mode", DEFAULT_CONFIG["response_mode"])),
         format_func=lambda x: x.replace("_", " ").title(),
+        key="response_mode",
         help="Select the mode for processing and combining retrieved text chunks."
     )
 
@@ -85,13 +109,13 @@ if show_config:
     st.sidebar.info(response_mode_descriptions[response_mode])
 
 else:
-    # Default values when configuration is hidden
-    rerank = True
-    hyde_transform = False
-    use_parser = True
-    similarity_top_k = 5
-    alpha = 0.5
-    response_mode = "tree_summarize"
+    # Use session state or default values when configuration is hidden
+    rerank = st.session_state.get("rerank", DEFAULT_CONFIG["rerank"])
+    hyde_transform = st.session_state.get("hyde_transform", DEFAULT_CONFIG["hyde_transform"])
+    use_parser = st.session_state.get("use_parser", DEFAULT_CONFIG["use_parser"])
+    similarity_top_k = st.session_state.get("similarity_top_k", DEFAULT_CONFIG["similarity_top_k"])
+    alpha = st.session_state.get("alpha", DEFAULT_CONFIG["alpha"])
+    response_mode = st.session_state.get("response_mode", DEFAULT_CONFIG["response_mode"])
 
 # Main area for query input and results
 query = st.text_area("Enter your query", height=100)

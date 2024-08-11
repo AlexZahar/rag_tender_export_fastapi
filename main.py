@@ -20,7 +20,6 @@ def root():
 @app.post("/api/search", response_model=Response, status_code=200)
 def search(query: Query):
     # Use the parser if enabled
-    print("query QQQQ", query)
     if query.use_parser:
         parsed_query = rag.parse_query(query.query, num_queries=1)[0]
         final_query = rag.generate_final_query(parsed_query)
