@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 class Query(BaseModel):
     query: str
-    similarity_top_k: Optional[int] = Field(default=1, ge=1, le=5)
+    similarity_top_k: Optional[int] = Field(default=1, ge=1, le=10)
 
 class SourceNode(BaseModel):
     text: str

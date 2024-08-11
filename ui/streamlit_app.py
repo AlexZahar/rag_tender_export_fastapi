@@ -54,7 +54,7 @@ with col1:
     st.markdown('<div class="title-and-slider"><h1>Find Your Knauf System</h1></div>', unsafe_allow_html=True)
 with col2:
     st.markdown('<div class="slider-container">', unsafe_allow_html=True)
-    similarity_top_k = st.slider("Similar results", min_value=1, max_value=5, value=2, step=1)
+    similarity_top_k = st.slider("Similar results", min_value=1, max_value=10, value=5, step=1)
     st.markdown('</div>', unsafe_allow_html=True)
 
 query = st.text_area("Enter competitor tender text", height=60, max_chars=None, key="query")
