@@ -53,25 +53,30 @@ if show_config:
         help="Enable or disable query parsing."
     )
 
-    similarity_top_k = st.sidebar.slider(
-        "Similarity Top K",
-        min_value=1,
-        max_value=10,
-        value=st.session_state.get("similarity_top_k", DEFAULT_CONFIG["similarity_top_k"]),
-        step=1,
-        key="similarity_top_k",
-        help="Number of top similar documents to retrieve."
-    )
+    # Put sliders in a single row
+    col1, col2 = st.sidebar.columns(2)
+    
+    with col1:
+        similarity_top_k = st.slider(
+            "Similarity Top K",
+            min_value=1,
+            max_value=10,
+            value=st.session_state.get("similarity_top_k", DEFAULT_CONFIG["similarity_top_k"]),
+            step=1,
+            key="similarity_top_k",
+            help="Number of top similar documents to retrieve."
+        )
 
-    alpha = st.sidebar.slider(
-        "Alpha",
-        min_value=0.0,
-        max_value=1.0,
-        value=st.session_state.get("alpha", DEFAULT_CONFIG["alpha"]),
-        step=0.01,
-        key="alpha",
-        help="Weight between keyword search (0.0) and vector search (1.0) in hybrid mode. Default is 0.5."
-    )
+    with col2:
+        alpha = st.slider(
+            "Alpha",
+            min_value=0.0,
+            max_value=1.0,
+            value=st.session_state.get("alpha", DEFAULT_CONFIG["alpha"]),
+            step=0.01,
+            key="alpha",
+            help="Weight between keyword search (0.0) and vector search (1.0) in hybrid mode. Default is 0.5."
+        )
 
     response_mode_options = [
         "refine",
@@ -117,33 +122,50 @@ else:
 # Main area for query input and results
 query = st.text_area("Enter your query", height=100)
 
-if st.button("Search"):
+# Create a placeholder for the search button
+search_button_placeholder = st.empty()
+
+# Create a placeholder for the results
+results_placeholder = st.container()
+
+if search_button_placeholder.button("Search", key="search_button"):
     if query:
-        # Prepare the request payload
-        payload = Query(
-            query=query,
-            similarity_top_k=similarity_top_k,
-            rerank=rerank,
-            hyde_transform=hyde_transform,
-            use_parser=use_parser,
-            alpha=alpha,
-            response_mode=response_mode
-        )
+        # Disable the search button
+        search_button_placeholder.empty()
+        disabled_button = st.button("Searching...", disabled=True)
 
-        # Make the API request
-        response = requests.post("http://localhost:8000/api/search", json=payload.dict())
+        # Show loading spinner
+        with st.spinner("Searching..."):
+            # Prepare the request payload
+            payload = Query(
+                query=query,
+                similarity_top_k=similarity_top_k,
+                rerank=rerank,
+                hyde_transform=hyde_transform,
+                use_parser=use_parser,
+                alpha=alpha,
+                response_mode=response_mode
+            )
 
-        if response.status_code == 200:
-            result = Response(**response.json())
-            
-            st.subheader("Search Result")
-            st.write(result.search_result)
+            # Make the API request
+            response = requests.post("http://localhost:8000/api/search", json=payload.dict())
 
-            st.subheader("Source Nodes")
-            for node in result.source_nodes:
-                with st.expander(f"Score: {node.score:.4f}"):
-                    st.write(node.text)
-        else:
-            st.error(f"Error: {response.status_code} - {response.text}")
+            if response.status_code == 200:
+                result = Response(**response.json())
+                
+                with results_placeholder:
+                    st.subheader("Search Result")
+                    st.write(result.search_result)
+
+                    st.subheader("Source Nodes")
+                    for node in result.source_nodes:
+                        with st.expander(f"Score: {node.score:.4f}"):
+                            st.write(node.text)
+            else:
+                with results_placeholder:
+                    st.error(f"Error: {response.status_code} - {response.text}")
+
+        # Re-enable the search button
+        search_button_placeholder.button("Search", key="search_button_after")
     else:
         st.warning("Please enter a query.")
