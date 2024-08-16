@@ -1,27 +1,27 @@
-name: Deploy to Railway
+# name: Deploy to Railway
 
-on:
-  push:
-    branches: [main]
+# on:
+#   push:
+#     branches: [main]
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: production
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     environment: production
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '16'
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: '16'
 
-    - name: Install Railway CLI
-      run: npm install -g @railway/cli
+#     - name: Install Railway CLI
+#       run: npm install -g @railway/cli
 
-    - name: Deploy to Railway
-      env:
-        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      run: railway up --service  ${{ secrets.RAILWAY_SERVICE_NAME }} --detach
+#     - name: Deploy to Railway
+#       env:
+#         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+#       run: railway up --service  ${{ secrets.RAILWAY_SERVICE_NAME }} --detach
