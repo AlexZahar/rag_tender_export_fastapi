@@ -3,10 +3,12 @@ __pycache__/
 *.py[cod]
 **/__pycache__/
 *$py.class
-
+.idea
 # C extensions
 *.so
-
+standalone_embed.sh
+embedEtcd.yaml
+user.yaml
 # Distribution / packaging
 .Python
 build/

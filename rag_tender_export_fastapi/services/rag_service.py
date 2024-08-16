@@ -46,7 +46,7 @@ class RAG:
         response_synthesizer = self.create_response_synthesizer()
 
         if rerank:
-            rerank_processor = SentenceTransformerRerank(model="cross-encoder/ms-marco-MiniLM-L-2-v2", top_n=3)
+            rerank_processor = SentenceTransformerRerank(model=self.config["reranker_model"], top_n=3)
             node_postprocessors.append(rerank_processor)
         
         query_engine = index.as_query_engine(

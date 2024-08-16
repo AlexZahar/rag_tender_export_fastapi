@@ -12,8 +12,8 @@ DEFAULT_CONFIG = {
     "rerank": True,
     "hyde_transform": True,
     "use_parser": False,
-    "similarity_top_k": 5,
-    "alpha": 0.5,
+    "similarity_top_k": 10,
+    "alpha": 0.7,
     "response_mode": "tree_summarize"
 }
 
@@ -148,7 +148,7 @@ if search_button_placeholder.button("Search", key="search_button"):
             )
 
             # Make the API request
-            response = requests.post("https://ragtenderexportfastapi-production.up.railway.app/api/search", json=payload.dict())
+            response = requests.post("http://127.0.0.1:8000/api/search", json=payload.dict())
 
             if response.status_code == 200:
                 result = Response(**response.json())

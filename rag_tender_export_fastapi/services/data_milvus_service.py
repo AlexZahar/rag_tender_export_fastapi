@@ -8,8 +8,7 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.llms.openai import OpenAI
 from llama_index.vector_stores.milvus import MilvusVectorStore
 import argparse
-import yaml
-
+from rag_tender_export_fastapi.config.settings import load_config
 
 class Data:
     def __init__(self, config):
@@ -23,11 +22,11 @@ class Data:
         
         # Create documents from DataFrame
         documents = [
-            Document(
-                text=f"Knauf System ID: {row['name']}, Eigenschaften: {row['long_tender_text']}",
-                metadata={"name": row['name']}
-            ) for i, row in df.iterrows()
-        ]
+        Document(
+            text=f"Knauf System ID: {row['name']}, Eigenschaften: {row['long_tender_text'].replace('</br>', ' ')}",
+            metadata={"name": row['name']}
+        ) for i, row in df.iterrows()
+]
 
         
         milvus_vector_store = MilvusVectorStore(
@@ -61,9 +60,8 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    config_file = "config.yml"
-    with open(config_file, "r") as conf:
-        config = yaml.safe_load(conf)
+    config = load_config()
+    
     data = Data(config)
 
     if args.ingest:
