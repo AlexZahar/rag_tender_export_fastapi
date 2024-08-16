@@ -10,12 +10,18 @@ st.title("Research RAG")
 # Default configuration
 DEFAULT_CONFIG = {
     "rerank": True,
-    "hyde_transform": True,
+    "hyde_transform": False,
     "use_parser": False,
     "similarity_top_k": 10,
-    "alpha": 0.7,
+    "alpha": 1.0,
     "response_mode": "tree_summarize"
 }
+
+# Initialize session state for query and results
+if "query" not in st.session_state:
+    st.session_state.query = ""
+if "results" not in st.session_state:
+    st.session_state.results = None
 
 # Sidebar configuration
 st.sidebar.title("Configuration")
@@ -120,7 +126,7 @@ else:
     response_mode = st.session_state.get("response_mode", DEFAULT_CONFIG["response_mode"])
 
 # Main area for query input and results
-query = st.text_area("Enter your query", height=100)
+query = st.text_area("Enter your query", value=st.session_state.query, height=100)
 
 # Create a placeholder for the search button
 search_button_placeholder = st.empty()
@@ -130,6 +136,9 @@ results_placeholder = st.container()
 
 if search_button_placeholder.button("Search", key="search_button"):
     if query:
+        # Update the query in session state
+        st.session_state.query = query
+
         # Disable the search button
         search_button_placeholder.empty()
         disabled_button = st.button("Searching...", disabled=True)
@@ -152,16 +161,9 @@ if search_button_placeholder.button("Search", key="search_button"):
 
             if response.status_code == 200:
                 result = Response(**response.json())
-                
-                with results_placeholder:
-                    st.subheader("Search Result")
-                    st.write(result.search_result)
-
-                    st.subheader("Source Nodes")
-                    for node in result.source_nodes:
-                        with st.expander(f"Score: {node.score:.4f}"):
-                            st.write(node.text)
+                st.session_state.results = result
             else:
+                st.session_state.results = None
                 with results_placeholder:
                     st.error(f"Error: {response.status_code} - {response.text}")
 
@@ -169,3 +171,18 @@ if search_button_placeholder.button("Search", key="search_button"):
         search_button_placeholder.button("Search", key="search_button_after")
     else:
         st.warning("Please enter a query.")
+
+# Display results if available
+if st.session_state.results:
+    with results_placeholder:
+        st.subheader("Search Result")
+        st.write(st.session_state.results.search_result)
+
+        st.subheader("Source Nodes")
+        for node in st.session_state.results.source_nodes:
+            with st.expander(f"Score: {node.score:.4f}"):
+                st.markdown(f"""
+                <div style="border:1px solid #e1e4e8; border-radius:6px; padding:10px; margin-bottom:10px;">
+                    <p style="margin:0;">{node.text}</p>
+                </div>
+                """, unsafe_allow_html=True)
