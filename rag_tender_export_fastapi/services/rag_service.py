@@ -20,8 +20,7 @@ class RAG:
     def __init__(self, config_file):
         self.config = config_file
         Settings.llm = OpenAI(model=self.config["llm_name"])
-        Settings.embed_model = HuggingFaceEmbedding(model_name=self.config["embedding_model"], trust_remote_code=True) 
-        Settings.node_parser = SentenceSplitter(chunk_size=912, chunk_overlap=40)
+        Settings.embed_model = HuggingFaceEmbedding(model_name=self.config["embedding_model"], trust_remote_code=True)
         Settings.num_output = 512
         Settings.context_window = 3900
 

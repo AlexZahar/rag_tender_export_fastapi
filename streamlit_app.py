@@ -1,10 +1,13 @@
 import streamlit as st
 import requests
-from rag_tender_export_fastapi.models.models import Query, Response, SourceNode
+from rag_tender_export_fastapi.models.models import Query, Response
+from rag_tender_export_fastapi.config.settings import load_config
 
-st.set_page_config(page_title="Research RAG", layout="wide")
+st.set_page_config(page_title="Knauf system from competitor tender text", layout="wide")
 
-st.title("Research RAG")
+config=load_config()
+
+st.title("Knauf system from competitor tender text")
 
 # Default configuration
 DEFAULT_CONFIG = {
@@ -156,7 +159,7 @@ if search_button_placeholder.button("Search", key="search_button"):
             )
 
             # Make the API request
-            response = requests.post("http://127.0.0.1:8000/api/search", json=payload.dict())
+            response = requests.post(config["fastapi_url"], json=payload.model_dump())
 
             if response.status_code == 200:
                 result = Response(**response.json())
