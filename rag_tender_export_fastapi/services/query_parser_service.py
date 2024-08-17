@@ -25,19 +25,57 @@ Queries:
 """
 
 query_gen_str = """
-Agieren Sie als Vertriebsberater in der Baubranche, der komplexe Ausschreibungstexte versteht. Ihre Aufgabe ist es, spezifische Parameter aus der gegebenen Ausschreibungsbeschreibung zu extrahieren und in einen einzigen String zu formatieren.
+Bevor Sie die Anfrage analysieren, führen Sie bitte folgende Bereinigungsschritte am Ausschreibungstext durch:
 
-Extrahieren Sie alle Eigenschaften des Wandsystems aus dem folgenden Text. Berücksichtigen Sie alle relevanten Details wie System-ID, Abmessungen, Feuerwiderstandsklasse, Materialien und Konstruktionsmerkmale. Entfernen Sie alle Leerzeichen und unnötigen Zeichen, die nicht Teil der Systemeigenschaftsstandards sind.
+        1. Entfernen Sie alle Zeilenumbrüche und ersetzen Sie sie durch Leerzeichen.
+        2. Ersetzen Sie mehrere aufeinanderfolgende Leerzeichen durch ein einzelnes Leerzeichen.
+        3. Entfernen Sie Leerzeichen vor und nach Kommas, Punkten, Doppelpunkten und Semikolons.
+        4. Entfernen Sie Leerzeichen vor schließenden und nach öffnenden Klammern.
+        5. Verbinden Sie getrennte Zahlen (z.B. "12, 5" zu "12,5").
+        6. Korrigieren Sie gängige Abkürzungen (z.B. "e. V." zu "e.V.", "z. B." zu "z.B.").
+        7. Entfernen Sie Leerzeichen vor % und °.
+        8. Stellen Sie sicher, dass nach Satzzeichen ein einzelnes Leerzeichen steht, außer bei Zahlen.
+        9. Korrigieren Sie Auslassungspunkte zu "...".
+        10. Entfernen Sie Leerzeichen vor Maßeinheiten (mm, m, dB, W, K).
+        11. Entfernen Sie Leerzeichen nach 'x' bei Mengenangaben (z.B. "2x 12,5" zu "2x12,5").
+        12. Entfernen Sie Leerzeichen vor Sternchen.
+        13. Entfernen Sie Leerzeichen um Schrägstriche.
+        14. Entfernen Sie führende und nachfolgende Leerzeichen.
+        15. Entfernen Sie alle Zeilen, die mit "Orca.Text.ImageRun", "Einheit :" oder "Artikelnr. :" beginnen.
+        16. Entfernen Sie die Zeile "(*) Nicht Zutreffendes streichen/ändern/ergänzen".
 
-Formatieren Sie die Ausgabe als einzelnen String in der folgenden Form:
-Knauf System ID: [System-ID], Eigenschaften: [Vollständige Beschreibung der Eigenschaften]
+        Hier ist ein Beispiel für die Anwendung dieser Schritte:
 
-Hinweise:
-- Die Eigenschaften sollten alle relevanten Details aus dem Eingabetext enthalten.
-- Bewahren Sie wichtige Formatierungen, einschließlich Zeilenumbrüche (dargestellt durch </br>).
-- Fügen Sie keine Informationen hinzu, die nicht im Originaltext vorhanden sind.
-- Entfernen Sie Platzhaltertexte oder Anweisungen (z.B. '(*) Nicht Zutreffendes streichen/ändern/ergänzen').
-- Wenn ein spezifischer Wert nicht angegeben ist (z.B. "Wandhöhe: ...... m"), übernehmen Sie ihn so.
+        Originaltext:
+        MW12BB, d=125mm
+        MW12BB - Metall-Einfachständerwand 2-lagig beplankt, d=125 mm
+        als nichttragende innere Trennwand nach DIN 4103-1,
+        mit Unterkonstruktion aus verzinkten Stahlblechprofilen mit Oberflächenstruktur, 
+        gemäß DIN EN 14195 und DIN 18182-1,
+        mit Metallständern CW 75, Boden und Deckenanschlüsse mit Randprofilen UW 75,
+        mit beidseitig 2 x 12,5 mm, Schallschutz-Gipsplatten Typ D DIN EN 520 bzw. GKB DIN 18180,
+        - Wanddicke: 125 mm,
+        - Wandhöhe: ...... m,
+        - Befestigungsuntergrund: Stahlbeton/Mauerwerk/ ……………/Leichtbeton (*),
+        - Standardverspachtelung Q2 gemäß IGG-Merkblatt 2,
+        - Gipsplatten, Spachtel mit Prüfsiegel "geprüft und empfohlen vom IBR"
+        System: Rigips MW12BB / Ausführung gemäß Verwendbarkeitsnachweis/Herstellervorschrift,
+        Unterkonstruktion:
+        mit RigiProfil MultiTec UW / CW 75-06, Ständerabstand 625 mm,
+        mit Rigips Anschlussdichtung aus Filz, einseitig selbstklebend,
+        Beplankung:
+        Beidseitig, 2 x 12,5 mm, Rigips Die Blaue RB,
+        mit Rigips Schnellbauschrauben DIN 18182-2 befestigen,
+        Verspachtelung:
+        Rigips VARIO Fugenspachtel Typ 4B DIN EN 13963,
+        Qualitätsstufe Q 2 als Standardverspachtelung, gemäß IGG-Merkblatt 2.
+        (*) Nicht Zutreffendes streichen/ändern/ergänzen
+        Orca.Text.ImageRun
+        Einheit : m²
+        Artikelnr. : MW12BB
+
+        Bereinigter Text:
+        MW12BB, d=125mm MW12BB - Metall-Einfachständerwand 2-lagig beplankt, d=125mm als nichttragende innere Trennwand nach DIN 4103-1, mit Unterkonstruktion aus verzinkten Stahlblechprofilen mit Oberflächenstruktur, gemäß DIN EN 14195 und DIN 18182-1, mit Metallständern CW 75, Boden und Deckenanschlüsse mit Randprofilen UW 75, mit beidseitig 2x12,5mm, Schallschutz-Gipsplatten Typ D DIN EN 520 bzw. GKB DIN 18180, - Wanddicke: 125mm, - Wandhöhe: ... m, - Befestigungsuntergrund: Stahlbeton/Mauerwerk/.../Leichtbeton(*), - Standardverspachtelung Q2 gemäß IGG-Merkblatt 2, - Gipsplatten, Spachtel mit Prüfsiegel "geprüft und empfohlen vom IBR" System: Rigips MW12BB/Ausführung gemäß Verwendbarkeitsnachweis/Herstellervorschrift, Unterkonstruktion: mit RigiProfil MultiTec UW/CW 75-06, Ständerabstand 625mm, mit Rigips Anschlussdichtung aus Filz, einseitig selbstklebend, Beplankung: Beidseitig, 2x12,5mm, Rigips Die Blaue RB, mit Rigips Schnellbauschrauben DIN 18182-2 befestigen, Verspachtelung: Rigips VARIO Fugenspachtel Typ 4B DIN EN 13963, Qualitätsstufe Q2 als Standardverspachtelung, gemäß IGG-Merkblatt 2.
 
 Eingabetext:
 {query}
