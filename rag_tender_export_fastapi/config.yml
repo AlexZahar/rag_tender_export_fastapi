@@ -4,9 +4,9 @@ deep_set_dim: 1024
 nomic: "nomic-ai/nomic-embed-text-v1.5"
 nomic_dim: 768
 
-reranker_model: "cross-encoder/quora-roberta-base-multilingual"
+# reranker_model: "mixedbread-ai/deepset-mxbai-embed-de-large-v1"
 # reranker_model: "cross-encoder/quora-roberta-base-multilingual"
-# reranker_model: "cross-encoder/ms-marco-MiniLM-L-2-v2"
+reranker_model: "cross-encoder/ms-marco-MiniLM-L-2-v2"
 
 data_path: "data/long_tender_innenwande_de.csv"
 llm_url: "http://localhost:11434"
@@ -24,7 +24,7 @@ milvus:
   uri: "rag_tender_export_fastapi/DB/milvus_innenwande_tender_fastapi.db"
   dim: 1024
   overwrite: false
-  enable_sparse: false
+  enable_sparse: true
   hybrid_ranker: "RRFRanker"
   hybrid_ranker_params: 
     k: 50

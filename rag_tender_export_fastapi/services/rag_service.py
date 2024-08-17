@@ -4,7 +4,6 @@ from llama_index.core import (
     PromptTemplate,
     get_response_synthesizer
 )
-from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.postprocessor import SentenceTransformerRerank
 from llama_index.core.query_engine import TransformQueryEngine
 from llama_index.core.indices.query.query_transform.base import HyDEQueryTransform

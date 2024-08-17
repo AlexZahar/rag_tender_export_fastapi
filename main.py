@@ -4,6 +4,7 @@ from rag_tender_export_fastapi.config.settings import load_config
 from rag_tender_export_fastapi.services.telemetry_service import setup_telemetry
 from rag_tender_export_fastapi.models.models import Query, Response, SourceNode
 from llama_index.core import QueryBundle
+from rag_tender_export_fastapi.utilities.clean_white_spaces import clean_text
 
 config = load_config()
 
@@ -40,6 +41,8 @@ def search(query: Query):
 
     # Execute the query
     query_bundle = QueryBundle(query_str=final_query)
+    # cleaned_query = clean_text(query_bundle)
+    # print("query CLEAN TEXT:", cleaned_query)
     response = query_engine.query(query_bundle)
 
     # Create a list of SourceNode objects
