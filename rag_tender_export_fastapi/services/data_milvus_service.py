@@ -2,13 +2,15 @@ import pandas as pd
 from llama_index.core import (
     StorageContext,
     VectorStoreIndex,
-    Document
+    Document    
 )
+from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.llms.openai import OpenAI
 from llama_index.vector_stores.milvus import MilvusVectorStore
 import argparse
 from rag_tender_export_fastapi.config.settings import load_config
+from rag_tender_export_fastapi.utilities.clean_white_spaces import clean_text
 
 class Data:
     def __init__(self, config):
@@ -23,10 +25,10 @@ class Data:
         # Create documents from DataFrame
         documents = [
         Document(
-            text=f"Knauf System ID: {row['name']}, Eigenschaften: {row['long_tender_text'].replace('</br>', ' ')}",
+            text=f"Knauf System ID: {row['name']}, Eigenschaften: {clean_text(row['long_tender_text'])}",
             metadata={"name": row['name']}
         ) for i, row in df.iterrows()
-]
+    ]       
 
         
         milvus_vector_store = MilvusVectorStore(
@@ -39,10 +41,10 @@ class Data:
             verbose=self.config["milvus"]["verbose"]
         )
         storage_context = StorageContext.from_defaults(vector_store=milvus_vector_store)
-    
 
+        node_parser = SimpleNodeParser.from_defaults(chunk_size=912)
         index = VectorStoreIndex.from_documents(
-            documents, embed_model=embed_model, llm=llm, storage_context=storage_context, show_progress=True
+            documents, embed_model=embed_model, llm=llm, transformations=[node_parser], storage_context=storage_context, show_progress=True
         )
         print(
             f"Data indexed successfully to Milvus."

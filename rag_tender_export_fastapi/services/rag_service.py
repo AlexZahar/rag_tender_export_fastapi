@@ -1,16 +1,18 @@
-from llama_index.core import VectorStoreIndex
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.vector_stores.milvus import MilvusVectorStore
-from llama_index.core import Settings
+from llama_index.core import (
+    VectorStoreIndex,
+    Settings,
+    PromptTemplate,
+    get_response_synthesizer
+)
 from llama_index.core.node_parser import SentenceSplitter
-from llama_index.llms.openai import OpenAI
 from llama_index.core.postprocessor import SentenceTransformerRerank
 from llama_index.core.query_engine import TransformQueryEngine
-from llama_index.core import PromptTemplate
-from llama_index.core import get_response_synthesizer
-from llama_index.core.indices.query.query_transform.base import (
-    HyDEQueryTransform,
-)
+from llama_index.core.indices.query.query_transform.base import HyDEQueryTransform
+
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.vector_stores.milvus import MilvusVectorStore
+from llama_index.llms.openai import OpenAI
+
 
 from rag_tender_export_fastapi.services.query_parser_service import generate_queries
 
