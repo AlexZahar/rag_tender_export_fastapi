@@ -1,15 +1,22 @@
+import logging
+import os
 from fastapi import FastAPI
 from rag_tender_export_fastapi.services.rag_service import RAG
 from rag_tender_export_fastapi.config.settings import load_config
 from rag_tender_export_fastapi.services.telemetry_service import setup_telemetry
 from rag_tender_export_fastapi.models.models import Query, Response, SourceNode
 from llama_index.core import QueryBundle
-from rag_tender_export_fastapi.utilities.clean_white_spaces import clean_text
+from telemetry import setup_telemetry
 
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 config = load_config()
 
 if config.get("enable_tracing", False):
-    setup_telemetry()
+    telemetry_setup_success = setup_telemetry()
+    if not telemetry_setup_success:
+        logger.warning("Telemetry setup failed. Continuing without telemetry.")
 
 rag = RAG(config_file=config)
 index = rag.milvus_index()
