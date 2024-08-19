@@ -43,7 +43,7 @@ def search(query: Query):
         alpha=query.alpha,
         similarity_top_k=query.similarity_top_k,
         response_mode=query.response_mode,
-        hydeTransform=query.hyde_transform
+        hyde_transform=query.hyde_transform
     )
 
     # Execute the query
