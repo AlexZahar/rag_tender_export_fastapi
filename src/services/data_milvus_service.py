@@ -9,8 +9,8 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.llms.openai import OpenAI
 from llama_index.vector_stores.milvus import MilvusVectorStore
 import argparse
-from rag_tender_export_fastapi.config.settings import load_config
-from rag_tender_export_fastapi.utilities.clean_white_spaces import clean_text
+from src.config.settings import load_config
+from src.utilities.clean_white_spaces import clean_text
 
 class Data:
     def __init__(self, config):

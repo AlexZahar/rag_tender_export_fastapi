@@ -1,5 +1,5 @@
 from transformers import AutoTokenizer, AutoModel
-from rag_tender_export_fastapi.config.settings import load_config
+from src.config.settings import load_config
 
 config=load_config()
 # Load model and tokenizer

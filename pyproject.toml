@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["zahar <zaharalex25@gmail.com>"]
 readme = "README.md"
-packages = [{include = "rag_tender_export_fastapi"}]
+packages = [{include = "src"}]
 
 [tool.poetry.scripts]
 start-services = "rag_tender_export_fastapi.scripts.start_services:main"

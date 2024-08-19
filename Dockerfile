@@ -27,10 +27,10 @@ COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/pytho
 COPY --from=builder /usr/local/bin/uvicorn /usr/local/bin/uvicorn
 
 # Copy necessary application files
-COPY ./rag_tender_export_fastapi ./rag_tender_export_fastapi
+COPY src ./rag_tender_export_fastapi
 COPY ./data ./data
 COPY main.py .
-COPY rag_tender_export_fastapi/config.yml .
+COPY src/config.yml .
 
 # Install only runtime dependencies
 RUN pip install --no-cache-dir fastapi

@@ -12,7 +12,7 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.vector_stores.milvus import MilvusVectorStore
 from llama_index.llms.openai import OpenAI
 
-from rag_tender_export_fastapi.services.query_parser_service import generate_queries
+from src.services.query_parser_service import generate_queries
 
 
 class RAG:

@@ -6,7 +6,7 @@ from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk import trace as trace_sdk
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
-from rag_tender_export_fastapi.config.settings import load_config
+from src.config.settings import load_config
 
 config=load_config()
 

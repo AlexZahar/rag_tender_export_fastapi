@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
-from rag_tender_export_fastapi.models.models import Query, Response
-from rag_tender_export_fastapi.config.settings import load_config
+from src.models.models import Query, Response
+from src.config.settings import load_config
 
 st.set_page_config(page_title="Knauf system from competitor tender text", layout="wide")
 

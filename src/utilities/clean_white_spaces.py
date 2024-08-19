@@ -1,7 +1,7 @@
 import re
 import pandas as pd
 from llama_index.core import Document
-from rag_tender_export_fastapi.config.settings import load_config
+from src.config.settings import load_config
 
 config=load_config()
 
