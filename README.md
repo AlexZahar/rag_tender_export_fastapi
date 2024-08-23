@@ -21,7 +21,9 @@ This project aims to help finding Knauf Tender text from Competitor tender text 
 
 ```
 
-#### Starting a the telemetry server
+#### Starting the telemetry server(deprecated)
+Using now llamatrace
+
 
 ```bash
 > python -m phoenix.server.main serve
@@ -43,11 +45,11 @@ This project aims to help finding Knauf Tender text from Competitor tender text 
 ```
 
 #### DATA: Ingest data into vector store
-To ingest data and create a new DB, modify the config yaml file with desired `milvus.uri` name and `data_path`
+To ingest data and create a new DB. To do that modify the config yaml file with desired `milvus.uri` as DB name and `data_path` as ingestion data
 
 ``` 
-python rag_tender_export_fastapi/services/data_milvus_service.py --ingest
-python rag_tender_export_fastapi/services/data_qdrant_service.py --ingest
+python src/services/data_milvus_service.py --ingest
+python src/services/data_qdrant_service.py --ingest
 ```
 
 

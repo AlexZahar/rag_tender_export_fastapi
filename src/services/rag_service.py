@@ -26,6 +26,7 @@ class RAG:
     def milvus_index(self):
         milvus_vector_store = MilvusVectorStore(
             uri=self.config["milvus"]["uri"],
+            collection_name=self.config["milvus"]["collection_name"],
             dim=self.config["milvus"]["dim"],
             overwrite=False,
             enable_sparse=self.config["milvus"]["enable_sparse"],
@@ -86,10 +87,13 @@ class RAG:
 
         return query_engine
 
-    def generate_final_query(self, query):
-        a = "Basierend auf den folgenden Eigenschaften:"
-        b = "Geben Sie bitte die Knauf System ID an, die diesen Eigenschaften entspricht."
-        return a + query + b
+    @staticmethod
+    def generate_final_query(query: str) -> str:
+        """Generate a final query for RAG model."""
+        prefix = "Basierend auf den folgenden Eigenschaften:"
+        suffix = "Geben Sie bitte die Knauf System ID an, die diesen Eigenschaften entspricht."
+        return prefix + query + suffix
+
 
     def get_llm(self):
         llm = OpenAI(model=self.config["llm_name"])

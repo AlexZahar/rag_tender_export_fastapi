@@ -33,6 +33,7 @@ class Data:
         
         milvus_vector_store = MilvusVectorStore(
             uri=self.config["milvus"]["uri"],
+            collection_name=self.config["milvus"]["collection_name"],
             dim=self.config["milvus"]["dim"],
             overwrite=True,
             enable_sparse=self.config["milvus"]["enable_sparse"],

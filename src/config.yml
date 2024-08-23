@@ -14,18 +14,20 @@ llm_url: "http://localhost:11434"
 # embedding_model: "sentence-transformers/all-mpnet-base-v2"
 # qdrant_url: "http://localhost:6333"
 llm_name: "gpt-3.5-turbo"
-embedding_model: "mixedbread-ai/deepset-mxbai-embed-de-large-v1"
+embedding_model: "nomic-ai/nomic-embed-text-v1.5"
 collection_name: "tendertext_short"
 chunk_size: 1024
 fastapi_url: "http://127.0.0.1:8000/api/search"
 enable_tracing: true
 telemetry_url: "http://127.0.0.1:6006/v1/traces"
 milvus:
-  uri: "src/DB/milvus_innenwande_tender_fastapi.db"
-  dim: 1024
+#  uri: "src/DB/nomic_innenwande_tender_fastapi.db"
+  uri: "http://localhost:19530"
+  collection_name: "knauf_tender_long"
+  dim: 768
   overwrite: false
   enable_sparse: true
   hybrid_ranker: "RRFRanker"
   hybrid_ranker_params:
-    k: 50
+    k: 150
   verbose: true
